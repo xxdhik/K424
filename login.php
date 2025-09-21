@@ -38,9 +38,7 @@ include 'includes/header.php';
         <div class="row align-items-center">
             
             <div class="col-md-5">
-                <div class="logo-placeholder">
-                    LOGO
-                </div>
+                <img src="assets/images/logo2.png" alt="Logo K424" class="img-fluid" style="max-width: 150px;">
             </div>
 
             <div class="col-md-7">

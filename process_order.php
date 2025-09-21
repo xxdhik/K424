@@ -24,13 +24,13 @@ foreach ($_SESSION['cart'] as $product_id => $quantity) {
 try {
     $pdo->beginTransaction();
 
-    // 1. Simpan data ke tabel `orders` (tetap sama)
+    // 1. Simpan data ke tabel `orders`
     $sql_order = "INSERT INTO orders (user_id, total_amount, payment_method) VALUES (?, ?, ?)";
     $stmt_order = $pdo->prepare($sql_order);
     $stmt_order->execute([$user_id, $total_price, $payment_method]);
     $order_id = $pdo->lastInsertId();
 
-    // 2. Simpan setiap item di keranjang ke tabel `order_items` (tetap sama)
+    // 2. Simpan setiap item di keranjang ke tabel `order_items`
     $sql_items = "INSERT INTO order_items (order_id, product_id, quantity, price_per_item) VALUES (?, ?, ?, ?)";
     $stmt_items = $pdo->prepare($sql_items);
     foreach ($_SESSION['cart'] as $product_id => $quantity) {
@@ -38,7 +38,7 @@ try {
         $stmt_items->execute([$order_id, $product_id, $quantity, $price_per_item]);
     }
 
-    // 3. [PENYESUAIAN] Kurangi stok untuk setiap produk di tabel `products`
+    // 3. Kurangi stok untuk setiap produk di tabel `products`
     $sql_update_stock = "UPDATE products SET stock = stock - ? WHERE id = ?";
     $stmt_update_stock = $pdo->prepare($sql_update_stock);
     foreach ($_SESSION['cart'] as $product_id => $quantity) {

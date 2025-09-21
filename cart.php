@@ -33,12 +33,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
 
     if ($action == 'add' && $id > 0) {
-        if (isset($_SESSION['cart'][$id])) {
-            $_SESSION['cart'][$id]++;
+        // [VALIDASI BARU] Cek stok sebelum menambah
+        $stmt = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
+        $stmt->execute([$id]);
+        $product = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        $stock_tersedia = $product ? $product['stock'] : 0;
+        $jumlah_di_keranjang = isset($_SESSION['cart'][$id]) ? $_SESSION['cart'][$id] : 0;
+
+        if ($stock_tersedia > $jumlah_di_keranjang) {
+            // Jika stok masih ada, tambahkan ke keranjang
+            if (isset($_SESSION['cart'][$id])) {
+                $_SESSION['cart'][$id]++;
+            } else {
+                $_SESSION['cart'][$id] = 1;
+            }
+            echo json_encode(['status' => 'success']);
         } else {
-            $_SESSION['cart'][$id] = 1;
+            // Jika stok habis, kirim response error
+            echo json_encode(['status' => 'error', 'message' => 'Stok tidak mencukupi!']);
         }
-        echo json_encode(['status' => 'success']);
+
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Aksi tidak valid']);
     }

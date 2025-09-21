@@ -71,24 +71,27 @@ $pdf->Ln(10); // Spasi
 // Tabel Detail Produk
 $pdf->SetFont('Arial', 'B', 10);
 $pdf->Cell(10, 8, 'No.', 1, 0, 'C');
-$pdf->Cell(100, 8, 'Nama Produk dengan IDnya', 1, 0, 'C');
-$pdf->Cell(30, 8, 'Jumlah', 1, 0, 'C');
-$pdf->Cell(50, 8, 'Harga', 1, 1, 'C');
+$pdf->Cell(85, 8, 'Nama Produk', 1, 0, 'C');
+$pdf->Cell(25, 8, 'Jumlah', 1, 0, 'C');
+$pdf->Cell(35, 8, 'Harga Satuan', 1, 0, 'C');
+$pdf->Cell(35, 8, 'Subtotal', 1, 1, 'C'); // Tambah kolom Subtotal
 
 $pdf->SetFont('Arial', '', 10);
 $no = 1;
 foreach ($items as $item) {
     $pdf->Cell(10, 8, $no++, 1, 0, 'C');
-    $pdf->Cell(100, 8, $item['name'], 1, 0);
-    $pdf->Cell(30, 8, $item['quantity'], 1, 0, 'C');
-    $pdf->Cell(50, 8, 'Rp. ' . number_format($item['price_per_item'] * $item['quantity'], 0, ',', '.'), 1, 1, 'R');
+    $pdf->Cell(85, 8, $item['name'], 1, 0);
+    $pdf->Cell(25, 8, $item['quantity'], 1, 0, 'C');
+    // Tampilkan harga satuan
+    $pdf->Cell(35, 8, 'Rp ' . number_format($item['price_per_item'], 0, ',', '.'), 1, 0, 'R');
+    // Tampilkan subtotal
+    $pdf->Cell(35, 8, 'Rp ' . number_format($item['price_per_item'] * $item['quantity'], 0, ',', '.'), 1, 1, 'R');
 }
 
 // Total Belanja
 $pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(140, 8, 'Total belanja (termasuk pajak):', 1, 0, 'R');
-$pdf->Cell(50, 8, 'Rp. ' . number_format($order['total_amount'], 0, ',', '.'), 1, 1, 'R');
-$pdf->Ln(20);
+$pdf->Cell(155, 8, 'Total belanja (termasuk pajak):', 1, 0, 'R'); // Sesuaikan lebar
+$pdf->Cell(35, 8, 'Rp ' . number_format($order['total_amount'], 0, ',', '.'), 1, 1, 'R');
 
 // Tanda Tangan
 $pdf->Cell(0, 7, 'TANDATANGAN TOKO', 0, 1, 'R');
