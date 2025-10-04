@@ -102,8 +102,8 @@ try {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'andhikapuja2004@gmail.com'; // Ganti dengan email Anda
-        $mail->Password   = 'rwekxmnfsqlctbyv'; // Ganti dengan App Password 16 karakter
+        $mail->Username   = '****************'; // Ganti dengan email Anda
+        $mail->Password   = '********'; // Ganti dengan password aplikasi Anda
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->setFrom('no-reply@k424.com', 'Toko K424');
